@@ -1,8 +1,8 @@
-import './App.css';
 import React, {useState} from "react";
 import Todo from "./components/Todo/Todo";
 import FilterButton from "./components/FilterButton/FilterButton";
 import App from "./App";
+import './App.css';
 
 const tasksState = [
     {id: "todo-1", name: "Eat", completed: false},
@@ -14,48 +14,59 @@ const AppContainer = () => {
     const [tasks, setTasks] = useState(tasksState);
     const [filter, setFilter] = useState('All');
     const [isAllChosen, setIsAllChosen] = useState(false);
-    const [isSmthChosen, setIsSmthChosen] = useState(false);
 
     const addTask = name => {
-        const newTask = {id: "todo-" + (tasks.length + 1), name: name, completed: false};
+        const newTask = {id: Date.now(), name, completed: false};
         setIsAllChosen(false)
         setTasks([...tasks, newTask]);
     };
 
     const editTask = (id, newName) => {
-        const editedTaskList = tasks.map(task => {
-            if (id === task.id) {
-                return {...task, name: newName}
-            }
-            return task;
-        });
-        setTasks(editedTaskList);
+        const taskList = [...tasks];
+        const editedTaskIndex = tasks.findIndex(task => task.id === id);
+
+        if (editedTaskIndex !== -1) {
+            taskList[editedTaskIndex].name = newName;
+        }
+
+        setTasks(taskList);
     };
 
     const deleteTask = id => {
-        const remainingTasks = tasks.filter(task => {
-                !id && setIsSmthChosen(false);
-                return id ? id !== task.id : !task.completed
-            }
-        );
+        const remainingTasks = tasks.filter(task => id !== task.id);
         setTasks(remainingTasks);
     };
 
-    const toggleTasksCompleted = (value) => {
+    const deleteAllCompletedTasks = () => {
+        const remainingTasks = tasks.filter(task => !task.completed);
+        setTasks(remainingTasks);
+    };
+
+    const toggleAllTasksCompleted = (value) => {
         const updatedTasks = tasks.map(task => {
-            return typeof value === "boolean" ? {
+            return {
                 ...task,
                 completed: value
-            } : value === task.id ? {
-                ...task,
-                completed: !task.completed
-            } : task;
+            }
+            });
+        const checkedTasks = updatedTasks.filter(task => {
+            return task.completed
+        })
+        checkedTasks.length === updatedTasks.length ? setIsAllChosen(true) : setIsAllChosen(false);
+        setTasks(updatedTasks);
+    }
+
+    const toggleTasksCompleted = (id) => {
+        const updatedTasks = tasks.map(task => {
+            if (id === task.id) {
+                return {...task, completed: !task.completed}
+            }
+            return task;
         });
         const checkedTasks = updatedTasks.filter(task => {
             return task.completed
         })
         checkedTasks.length === updatedTasks.length ? setIsAllChosen(true) : setIsAllChosen(false);
-        checkedTasks.length > 0 ? setIsSmthChosen(true) : setIsSmthChosen(false);
         setTasks(updatedTasks);
     };
 
@@ -68,23 +79,28 @@ const AppContainer = () => {
     const filteredTasks = Object.keys(filters);
 
     const filterList = filteredTasks.map(name => (
-        <FilterButton key={name}
-                      name={name}
-                      filter={filter}
-                      setFilter={setFilter}
-                      isPressed={name === filter}/>
+        <FilterButton
+            key={name}
+            name={name}
+            filter={filter}
+            setFilter={setFilter}
+            isPressed={name === filter}
+        />
     ));
 
     const taskList = tasks
         .filter(filters[filter])
-        .map(task => <Todo toggleTasksCompleted={toggleTasksCompleted}
-                           deleteTask={deleteTask}
-                           editTask={editTask}
-                           key={task.id}
-                           taskName={task.name}
-                           id={task.id}
-                           completed={task.completed}
-        />)
+        .map(task => (
+            <Todo
+                toggleTasksCompleted={toggleTasksCompleted}
+                deleteTask={deleteTask}
+                editTask={editTask}
+                key={task.id}
+                taskName={task.name}
+                id={task.id}
+                completed={task.completed}
+            />)
+        )
 
     const tasksNoun = tasks.length !== 1 ? 'tasks' : 'task';
     const headingText = `${tasks.length} ${tasksNoun} left`;
@@ -92,15 +108,19 @@ const AppContainer = () => {
     return (
         <div className="App">
             <div className="App-container">
-                <App addTask={addTask}
-                     toggleTasksCompleted={toggleTasksCompleted}
-                     isAllChosen={isAllChosen}
-                     isSmthChosen={isSmthChosen}
-                     deleteTask={deleteTask}
-                     tasks={tasks}
-                     taskList={taskList}
-                     filterList={filterList}
-                     headingText={headingText}/>
+                <App
+                    addTask={addTask}
+                    toggleTasksCompleted={toggleTasksCompleted}
+                    isAllChosen={isAllChosen}
+                    isAnyTasksChosen={tasks.some(task => task.completed)}
+                    deleteTask={deleteTask}
+                    deleteAllCompletedTasks={deleteAllCompletedTasks}
+                    toggleAllTasksCompleted={toggleAllTasksCompleted}
+                    tasks={tasks}
+                    taskList={taskList}
+                    filterList={filterList}
+                    headingText={headingText}
+                />
             </div>
         </div>
     );

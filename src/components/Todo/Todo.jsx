@@ -1,9 +1,16 @@
 import React, {useState} from "react";
 
-const Todo = ({ taskName, id, completed, deleteTask, editTask, toggleTasksCompleted }) => {
+const Todo = ({
+                  taskName,
+                  id,
+                  completed,
+                  deleteTask,
+                  editTask,
+                  toggleTasksCompleted
+              }) => {
     const [isEditing, setEditing] = useState(false);
     const [newName, setNewName] = useState(taskName);
-    const editFormPlaceholder = "New name for " +  taskName;
+    const editFormPlaceholder = "New name for " + taskName;
 
     const toggleEditingMode = (value) => {
         setEditing(!isEditing)
@@ -22,16 +29,18 @@ const Todo = ({ taskName, id, completed, deleteTask, editTask, toggleTasksComple
     const editingModeContent = (
         <form className="stack-small" onSubmit={handleSubmit}>
             <div className="form-group">
-                <input placeholder={editFormPlaceholder}
-                       id={id} className="todo-text"
-                       type="text"
-                       value={newName}
-                       onChange={handleChange}/>
+                <input
+                    placeholder={editFormPlaceholder}
+                    id={id} className="todo-text"
+                    type="text"
+                    value={newName}
+                    onChange={handleChange}/>
             </div>
             <div className="btn-group">
-                <button type="button"
-                        className="btn todo-cancel"
-                        onClick={toggleEditingMode}>
+                <button
+                    type="button"
+                    className="btn todo-cancel"
+                    onClick={toggleEditingMode}>
                     Cancel
                 </button>
                 <button type="submit"
@@ -56,7 +65,10 @@ const Todo = ({ taskName, id, completed, deleteTask, editTask, toggleTasksComple
                 </label>
             </div>
             <div className="btn-group">
-                <button type="button" className="btn" onClick={toggleEditingMode}>
+                <button
+                    type="button"
+                    className="btn"
+                    onClick={toggleEditingMode}>
                     Edit
                 </button>
                 <button
@@ -70,10 +82,11 @@ const Todo = ({ taskName, id, completed, deleteTask, editTask, toggleTasksComple
         </div>
     );
 
-    return(
+    return (
         <li className="todo">
-        {isEditing ? editingModeContent : viewModeContent}
+            {isEditing ? editingModeContent : viewModeContent}
         </li>
-    )}
+    )
+}
 
 export default Todo;
