@@ -1,9 +1,10 @@
 import React from "react";
-import Main from "./components/Main/Main";
-import Footer from "./components/Footer/Footer";
-import './App.css';
 
-const App = ({
+import './../App.css';
+import Main from "./Main/Main";
+import Footer from "./Footer/Footer";
+
+const ToDo = ({
                  addTask,
                  tasks,
                  taskList,
@@ -35,6 +36,5 @@ const App = ({
     </>
 );
 
-export default App;
-
+export default ToDo;
 

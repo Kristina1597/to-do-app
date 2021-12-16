@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 
-const Todo = ({
+const Item = ({
                   taskName,
                   id,
                   completed,
@@ -89,4 +89,4 @@ const Todo = ({
     )
 }
 
-export default Todo;
+export default Item;
