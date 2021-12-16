@@ -1,11 +1,12 @@
 import React from "react";
+import cn from "classnames"
 
-function FilterButton({ name, setFilter }) {
-    return (
-        <button type="button" className="btn toggle-btn" aria-pressed="true" onClick={() => setFilter(name)}>
-            <span>{name}</span>
-        </button>
-    );
-}
+const FilterButton = ({ name, setFilter, filter }) => (
+    <button type="button"
+            className={cn("btn", "toggle-btn", {["btn-pressed"]: filter === name})}
+            onClick={() => setFilter(name)}>
+        <span>{name}</span>
+    </button>
+);
 
 export default FilterButton;

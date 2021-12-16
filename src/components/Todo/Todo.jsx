@@ -1,41 +1,41 @@
 import React, {useState} from "react";
 
-const Todo = (props) => {
+const Todo = ({ taskName, id, completed, deleteTask, editTask, toggleTasksCompleted }) => {
     const [isEditing, setEditing] = useState(false);
-    const [newName, setNewName] = useState('');
-
-    const onChange = (e) => {
-        props.toggleTaskCompleted(props.id);
-    }
+    const [newName, setNewName] = useState(taskName);
+    const editFormPlaceholder = "New name for " +  taskName;
 
     const toggleEditingMode = (value) => {
         setEditing(!isEditing)
     };
 
-    function handleChange(e) {
+    const handleChange = e => {
         setNewName(e.target.value);
-    }
+    };
 
-    function handleSubmit(e) {
+    const handleSubmit = e => {
         e.preventDefault();
-        props.editTask(props.id, newName);
-        setNewName("");
+        editTask(id, newName);
         setEditing(false);
-    }
+    };
 
     const editingModeContent = (
         <form className="stack-small" onSubmit={handleSubmit}>
             <div className="form-group">
-                <label className="todo-label" htmlFor={props.id}>
-                    New name for {props.name}
-                </label>
-                <input id={props.id} className="todo-text" type="text" onChange={handleChange}/>
+                <input placeholder={editFormPlaceholder}
+                       id={id} className="todo-text"
+                       type="text"
+                       value={newName}
+                       onChange={handleChange}/>
             </div>
             <div className="btn-group">
-                <button type="button" className="btn todo-cancel" onClick={toggleEditingMode}>
+                <button type="button"
+                        className="btn todo-cancel"
+                        onClick={toggleEditingMode}>
                     Cancel
                 </button>
-                <button type="submit" className="btn btn__primary todo-edit">
+                <button type="submit"
+                        className="btn btn__primary todo-edit">
                     Save
                 </button>
             </div>
@@ -46,13 +46,13 @@ const Todo = (props) => {
         <div className="stack-small">
             <div className="input__checkbox">
                 <input
-                    id={props.id}
+                    id={id}
                     type="checkbox"
-                    defaultChecked={props.completed}
-                    onChange={() => props.toggleTaskCompleted(props.id)}
+                    checked={completed}
+                    onChange={() => toggleTasksCompleted(id)}
                 />
-                <label className="todo-label" htmlFor={props.id}>
-                    {props.name}
+                <label className="todo-label" htmlFor={id}>
+                    {taskName}
                 </label>
             </div>
             <div className="btn-group">
@@ -62,7 +62,7 @@ const Todo = (props) => {
                 <button
                     type="button"
                     className="btn"
-                    onClick={() => props.deleteTask(props.id)}
+                    onClick={() => deleteTask(id)}
                 >
                     Delete
                 </button>

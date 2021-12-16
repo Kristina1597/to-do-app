@@ -34,6 +34,9 @@ body {
 .footer-container {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
 }
 
 .App-header {
@@ -41,7 +44,6 @@ body {
     color: #e9d7d7;
 }
 
-/* RESETS */
 *,
 *::before,
 *::after {
@@ -99,17 +101,23 @@ input::placeholder {
     font-style: italic;
 }
 
-
-/*END RESETS*/
-/* GLOBAL STYLES */
 .form-group > input[type="text"] {
     display: inline-block;
     margin-top: 0.4rem;
+    height: 4rem;
 }
 
 .btn-group {
     display: flex;
+    flex-wrap: nowrap;
+}
 
+.btn-pressed {
+    background-color: #d29d9d;
+}
+
+.hidden {
+    visibility: hidden;
 }
 
 .stack-exception {
@@ -119,7 +127,6 @@ input::placeholder {
 #list-heading {
     font-weight: inherit;
     font-size: inherit;
-    margin-right: 150px;
 }
 
 .stack-small {
@@ -129,14 +136,10 @@ input::placeholder {
     margin: 5px 0;
 }
 
-/* END GLOBAL STYLES */
 .todoapp {
     margin: 2rem 0 0;
-    /*padding: 1rem;*/
     position: relative;
-    /*box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 2.5rem 5rem 0 rgba(0, 0, 0, 0.1);*/
 }
-
 
 .todoapp > * {
     max-width: 50rem;
@@ -152,8 +155,7 @@ input::placeholder {
     display: block;
     max-width: 100%;
     text-align: center;
-    margin: 0;
-    margin-bottom: 1rem;
+    margin: 0 0 1rem;
 }
 
 .label__lg {
@@ -167,11 +169,12 @@ input::placeholder {
 .input__lg {
     padding: 2rem;
     border: 1px solid darkgrey;
+    margin-bottom: 15px;
+    border-radius: 5px;
 }
 
 .input__lg:focus {
     outline: none
-    /*box-shadow: inset 0 0 0 2px;*/
 }
 
 [class*="__lg"] {
@@ -184,15 +187,10 @@ input::placeholder {
     margin-bottom: 1rem;
 }
 
-.filters {
-    /*width: 100%;*/
-    /*margin: unset auto;*/
-}
-
 .todo {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    height: 6rem;
 }
 
 .todo > * {
@@ -201,7 +199,7 @@ input::placeholder {
 
 .todo-text {
     width: 100%;
-    min-height: 4.4rem;
+    min-height: 4rem;
     padding: 0.4rem 0.8rem;
     border: 2px solid #8e7373;
 }
