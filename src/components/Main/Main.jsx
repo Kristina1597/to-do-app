@@ -6,7 +6,7 @@ const Main = ({
                   addTask,
                   tasks,
                   taskList,
-                  toggleAllTasksCompleted,
+                  toggleAllTasks,
                   isAllChosen
               }) => {
     return (
@@ -16,7 +16,7 @@ const Main = ({
                 <input
                     type="checkbox"
                     checked={isAllChosen}
-                    onChange={() => toggleAllTasksCompleted(!isAllChosen)}
+                    onChange={() => toggleAllTasks(!isAllChosen)}
                 />
                 <label className="todo-label">
                     Choose all

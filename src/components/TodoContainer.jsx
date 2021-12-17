@@ -1,104 +1,47 @@
 import React from "react";
 import {connect} from "react-redux";
 import Todo from "./Todo";
-import {addTask, deleteAllCompletedTasks, deleteTask, editTask, toggleAllTasks, toggleTasks} from "../redux/reducer";
+import FilterButton from "./FilterButton/FilterButton";
+import Item from "./Item/Item";
+import {
+    addTask,
+    deleteAllCompletedTasks,
+    deleteTask,
+    editTask,
+    setFilter,
+    toggleAllTasks,
+    toggleTasks
+} from "../redux/reducer";
 
 class TodoContainer extends React.Component {
     render() {
-        debugger
-        // const [tasks, setTasks] = useState('');
-        // const [filter, setFilter] = useState('All');
-        // const [isAllChosen, setIsAllChosen] = useState(false);
-        //
-        // const addTask = name => {
-        //     const newTask = {id: Date.now(), name, completed: false};
-        //     setIsAllChosen(false)
-        //     setTasks([...tasks, newTask]);
-        // };
-        //
-        // const editTask = (id, newName) => {
-        //     const taskList = [...tasks];
-        //     const editedTaskIndex = taskList.findIndex(task => task.id === id);
-        //
-        //     if (editedTaskIndex !== -1) {
-        //         taskList[editedTaskIndex].name = newName;
-        //     }
-        //
-        //     setTasks(taskList);
-        // };
-        //
-        // const deleteTask = id => {
-        //     const remainingTasks = tasks.filter(task => id !== task.id);
-        //     setTasks(remainingTasks);
-        // };
-        //
-        // const deleteAllCompletedTasks = () => {
-        //     const remainingTasks = tasks.filter(task => !task.completed);
-        //     setTasks(remainingTasks);
-        // };
-        //
-        // const toggleAllTasksCompleted = (value) => {
-        //     const updatedTasks = tasks.map(task => {
-        //         return {
-        //             ...task,
-        //             completed: value
-        //         }
-        //         });
-        //     const checkedTasks = updatedTasks.filter(task => {
-        //         return task.completed
-        //     })
-        //     checkedTasks.length === updatedTasks.length ? setIsAllChosen(true) : setIsAllChosen(false);
-        //     setTasks(updatedTasks);
-        // }
-        //
-        // const toggleTasksCompleted = (id) => {
-        //     const updatedTasks = tasks.map(task => {
-        //         if (id === task.id) {
-        //             return {...task, completed: !task.completed}
-        //         }
-        //         return task;
-        //     });
-        //     const checkedTasks = updatedTasks.filter(task => {
-        //         return task.completed
-        //     })
-        //     checkedTasks.length === updatedTasks.length ? setIsAllChosen(true) : setIsAllChosen(false);
-        //     setTasks(updatedTasks);
-        // };
-        //
-        // const filters = {
-        //     All: () => true,
-        //     Active: (task) => !task.completed,
-        //     Completed: (task) => task.completed
-        // }
-        //
-        // const filteredTasks = Object.keys(filters);
-        //
-        // const filterList = filteredTasks.map(name => (
-        //     <FilterButton
-        //         key={name}
-        //         name={name}
-        //         filter={filter}
-        //         setFilter={setFilter}
-        //         isPressed={name === filter}
-        //     />
-        // ));
-        //
-        // const taskList = tasks
-        //     .filter(filters[filter])
-        //     .map(task => (
-        //         <Item
-        //             toggleTasksCompleted={toggleTasksCompleted}
-        //             deleteTask={deleteTask}
-        //             editTask={editTask}
-        //             key={task.id}
-        //             taskName={task.name}
-        //             id={task.id}
-        //             completed={task.completed}
-        //         />)
-        //     )
-        //
-        // const tasksNoun = tasks.length !== 1 ? 'tasks' : 'task';
-        // const headingText = `${tasks.length} ${tasksNoun} left`;
+        const filteredTasks = Object.keys(this.props.filters);
+        const filterList = filteredTasks.map(name => (
+            <FilterButton
+                key={name}
+                name={name}
+                filter={this.props.currentFilter}
+                setFilter={this.props.setFilter}
+                isPressed={name === this.props.currentFilter}
+            />
+        ));
+
+        const taskList = this.props.tasks
+            .filter(this.props.filters[this.props.currentFilter])
+            .map(task => (
+                <Item
+                    toggleTasks={this.props.toggleTasks}
+                    deleteTask={this.props.deleteTask}
+                    editTask={this.props.editTask}
+                    key={task.id}
+                    taskName={task.name}
+                    id={task.id}
+                    completed={task.completed}
+                />)
+            )
+
+        const tasksNoun = this.props.tasks.length !== 1 ? 'tasks' : 'task';
+        const headingText = `${this.props.tasks.length} ${tasksNoun} left`;
 
         return (
             <div className="App">
@@ -106,16 +49,13 @@ class TodoContainer extends React.Component {
                     <Todo
                         isAllChosen={this.props.isAllChosen}
                         addTask={this.props.addTask}
-                        editTask={this.props.editTask}
-                        deleteTask={this.props.deleteTask}
-                        deleteAllCompletedTasks={this.props.deleteAllCompletedTasks()}
-                        toggleTasks={this.props.toggleTasks}
+                        deleteAllCompletedTasks={this.props.deleteAllCompletedTasks}
                         toggleAllTasks={this.props.toggleAllTasks}
-                        // isAnyTasksChosen={tasks.some(task => task.completed)}
-                        // tasks={tasks}
-                        // taskList={taskList}
-                        // filterList={filterList}
-                        // headingText={headingText}
+                        isAnyTasksChosen={this.props.tasks.some(task => task.completed)}
+                        tasks={this.props.tasks}
+                        taskList={taskList}
+                        filterList={filterList}
+                        headingText={headingText}
                     />
                 </div>
             </div>
@@ -125,8 +65,10 @@ class TodoContainer extends React.Component {
 
 let mapStateToProps = (store) => (
     {
-        isAllChosen: store.isAllChosen,
-        tasks: store.tasks
+        isAllChosen: store.todo.isAllChosen,
+        tasks: store.todo.tasks,
+        filters: store.todo.filters,
+        currentFilter: store.todo.currentFilter
     });
 
 let mapDispatchToProps = (dispatch) => {
@@ -141,7 +83,7 @@ let mapDispatchToProps = (dispatch) => {
             dispatch(deleteTask(id))
         },
         deleteAllCompletedTasks: () => {
-            dispatch(deleteAllCompletedTasks)
+            dispatch(deleteAllCompletedTasks())
         },
         toggleTasks: (id) => {
             dispatch(toggleTasks(id))
@@ -149,6 +91,9 @@ let mapDispatchToProps = (dispatch) => {
         toggleAllTasks: (value) => {
             dispatch(toggleAllTasks(value))
         },
+        setFilter: (currentFilter) => {
+            dispatch(setFilter(currentFilter))
+        }
     }
 }
 

@@ -6,7 +6,7 @@ const Item = ({
                   completed,
                   deleteTask,
                   editTask,
-                  toggleTasksCompleted
+                  toggleTasks
               }) => {
     const [isEditing, setEditing] = useState(false);
     const [newName, setNewName] = useState(taskName);
@@ -58,7 +58,7 @@ const Item = ({
                     id={id}
                     type="checkbox"
                     checked={completed}
-                    onChange={() => toggleTasksCompleted(id)}
+                    onChange={() => toggleTasks(id)}
                 />
                 <label className="todo-label" htmlFor={id}>
                     {taskName}
