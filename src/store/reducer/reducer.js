@@ -5,8 +5,11 @@ const DELETE_ALL_COMPLETED_TASKS = "DELETE_ALL_COMPLETED_TASKS";
 const TOGGLE_TASKS = "TOGGLE_TASKS";
 const TOGGLE_ALL_TASKS = "TOGGLE_ALL_TASKS";
 const SET_FILTER = "SET_FILTER";
+const GET_TASKS_SUCCEED = "GET_TASKS_SUCCEED";
+const GET_TASKS_FAILED = "GET_TASKS_FAILED";
+const TASKS_LOAD_PENDING = "TASKS_LOAD_PENDING";
 
-let initialState = {
+const initialState = {
     tasks: [
         {id: "todo-1", name: "Eat", completed: false},
         {id: "todo-2", name: "Sleep", completed: false},
@@ -18,11 +21,31 @@ let initialState = {
         Completed: (task) => task.completed
     },
     currentFilter: "All",
-    isAllChosen: false
+    isAllChosen: false,
+    error: null
 }
 
 const todoReducer = (state = initialState, action) => {
     switch (action.type) {
+
+        case GET_TASKS_SUCCEED: {
+            return {
+                ...state,
+                tasks: [...action.tasks]
+            }
+        }
+
+        case GET_TASKS_FAILED: {
+            return {
+                ...state,
+                error: {
+                    message: action.error.message,
+                    status: action.error.status
+                },
+                tasks: state.tasks
+            }
+        }
+
         case ADD_TASK: {
             const newTask = {id: Date.now(), name: action.name, completed: false};
             return {
@@ -100,6 +123,9 @@ const todoReducer = (state = initialState, action) => {
 }
 
 export const addTask = (name) => ({type: ADD_TASK, name});
+export const loadTasks = () => ({type: TASKS_LOAD_PENDING});
+export const getTasksSucceed = (tasks) => ({type: GET_TASKS_SUCCEED, tasks});
+export const getTasksFailed = (error) => ({type: GET_TASKS_FAILED, error});
 export const editTask = (id, newName) => ({type: EDIT_TASK, id, newName});
 export const deleteTask = (id) => ({type: DELETE_TASK, id});
 export const deleteAllCompletedTasks = () => ({type: DELETE_ALL_COMPLETED_TASKS});
