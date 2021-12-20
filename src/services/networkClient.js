@@ -4,12 +4,6 @@ axios.defaults.baseURL = 'http://localhost:3000';
 
 const responseBody = (response) => response.data;
 
-const sleep = (ms) => (response) => {
-    return new Promise(resolve =>
-            setTimeout(() => resolve(response), ms)
-    );
-};
-
 const requests = {
     get: () =>
         axios

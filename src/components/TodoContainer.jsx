@@ -10,7 +10,7 @@ import {
     editTask, loadTasks,
     setFilter,
     toggleAllTasks,
-    toggleTasks
+    toggleTask
 } from "../store/reducer/reducer";
 
 class TodoContainer extends React.Component {
@@ -35,7 +35,7 @@ class TodoContainer extends React.Component {
             .filter(this.props.filters[this.props.currentFilter])
             .map(task => (
                 <Item
-                    toggleTasks={this.props.toggleTasks}
+                    toggleTask={this.props.toggleTask}
                     deleteTask={this.props.deleteTask}
                     editTask={this.props.editTask}
                     key={task.id}
@@ -90,8 +90,8 @@ let mapDispatchToProps = (dispatch) => {
         deleteAllCompletedTasks: () => {
             dispatch(deleteAllCompletedTasks())
         },
-        toggleTasks: (id) => {
-            dispatch(toggleTasks(id))
+        toggleTask: (id) => {
+            dispatch(toggleTask(id))
         },
         toggleAllTasks: (value) => {
             dispatch(toggleAllTasks(value))

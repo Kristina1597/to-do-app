@@ -6,13 +6,13 @@ const Item = ({
                   completed,
                   deleteTask,
                   editTask,
-                  toggleTasks
+                  toggleTask
               }) => {
     const [isEditing, setEditing] = useState(false);
     const [newName, setNewName] = useState(taskName);
     const editFormPlaceholder = "New name for " + taskName;
 
-    const toggleEditingMode = (value) => {
+    const toggleEditingMode = () => {
         setEditing(!isEditing)
     };
 
@@ -58,7 +58,7 @@ const Item = ({
                     id={id}
                     type="checkbox"
                     checked={completed}
-                    onChange={() => toggleTasks(id)}
+                    onChange={() => toggleTask(id)}
                 />
                 <label className="todo-label" htmlFor={id}>
                     {taskName}
