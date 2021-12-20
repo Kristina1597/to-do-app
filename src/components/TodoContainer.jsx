@@ -7,13 +7,18 @@ import {
     addTask,
     deleteAllCompletedTasks,
     deleteTask,
-    editTask,
+    editTask, loadTasks,
     setFilter,
     toggleAllTasks,
     toggleTasks
-} from "../redux/reducer";
+} from "../store/reducer/reducer";
 
 class TodoContainer extends React.Component {
+
+    componentDidMount() {
+        this.props.loadTasks();
+    }
+
     render() {
         const filteredTasks = Object.keys(this.props.filters);
         const filterList = filteredTasks.map(name => (
@@ -93,6 +98,9 @@ let mapDispatchToProps = (dispatch) => {
         },
         setFilter: (currentFilter) => {
             dispatch(setFilter(currentFilter))
+        },
+        loadTasks: () => {
+            dispatch(loadTasks())
         }
     }
 }
