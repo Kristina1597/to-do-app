@@ -1,7 +1,7 @@
-import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+import {applyMiddleware, combineReducers, createStore} from "redux";
 import todoReducer from "./reducer/reducer";
 import createSagaMiddleware from 'redux-saga';
-import rootSaga from "./sagas";
+import rootSaga from "./sagas/tasksSaga";
 
 const reducers = combineReducers({
     todo: todoReducer

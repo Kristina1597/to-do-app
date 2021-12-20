@@ -11,9 +11,7 @@ const TASKS_LOAD_PENDING = "TASKS_LOAD_PENDING";
 
 const initialState = {
     tasks: [
-        {id: "todo-1", name: "Eat", completed: false},
-        {id: "todo-2", name: "Sleep", completed: false},
-        {id: "todo-3", name: "Repeat", completed: false}
+
     ],
     filters: {
         All: () => true,
@@ -29,6 +27,7 @@ const todoReducer = (state = initialState, action) => {
     switch (action.type) {
 
         case GET_TASKS_SUCCEED: {
+
             return {
                 ...state,
                 tasks: [...action.tasks]
@@ -46,14 +45,14 @@ const todoReducer = (state = initialState, action) => {
             }
         }
 
-        case ADD_TASK: {
-            const newTask = {id: Date.now(), name: action.name, completed: false};
-            return {
-                ...state,
-                tasks: [...state.tasks, newTask],
-                isAllChosen: false
-            }
-        }
+        // case ADD_TASK: {
+        //     const newTask = {id: Date.now(), name: action.name, completed: false};
+        //     return {
+        //         ...state,
+        //         tasks: [...state.tasks, newTask],
+        //         isAllChosen: false
+        //     }
+        // }
 
         case EDIT_TASK: {
             const taskList = [...state.tasks];
